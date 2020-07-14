@@ -33,3 +33,62 @@ const render = require("./lib/htmlRenderer");
 // for further information. Be sure to test out each class and verify it generates an
 // object with the correct structure and methods. This structure will be crucial in order
 // for the provided `render` function to work! ```
+
+async function init() {
+
+    var moreEmployees = 'yes';
+    var id_tracker = 1;
+    const employee_list = [];
+
+    while (moreEmployees === 'yes') {
+        try {
+            const { role } = await inquirer.prompt([
+                { type: "list", message: "Which kind of employee would you like to add?", choices: ["Engineer", "Intern", "Office Manager"], name: "role" }
+            ])
+
+            const arguments = [];
+
+            var general_responses = await inquirer.prompt([
+                { type: "input", message: `What is the name of the ${role}?`, name: "name" },
+                { type: "input", message: `What is the email of the ${role}?`, name: "email" }
+            ])
+
+            arguments.push(general_responses.name);
+            arguments.push(id_tracker);
+            id_tracker += 1;
+            arguments.push(general_responses.email);
+
+            var employee;
+
+            if (role === "Engineer") {
+                var response = await inquirer.prompt({ type: "input", message: "What is the engineer's Github username?", name: "github" })
+                arguments.push(response.github)
+                employee = new Engineer(...arguments)
+            }
+            else if (role === "Intern") {
+                var response = await inquirer.prompt({ type: "input", message: "Where does the intern go to school?", name: "school" })
+                arguments.push(response.school)
+                employee = new Intern(...arguments)
+            }
+            else if (role === "Office Manager") {
+                var response = await inquirer.prompt({ type: "input", message: "What is the office manager's room number?", name: "room_number" })
+                arguments.push(response.room_number)
+                employee = new Manager(...arguments)
+            }
+
+            employee_list.push(employee)
+
+            var ask_again = await inquirer.prompt({type:"list", message:"Do you want to add another employee?", choices:['yes', 'no'], name:"again"})
+            moreEmployees = ask_again.again
+
+
+
+
+        } catch (error) {
+            throw error
+        }
+    }
+    render(employee_list)
+}
+
+init()
