@@ -88,7 +88,15 @@ async function init() {
             throw error
         }
     }
-    render(employee_list)
+    var html = render(employee_list)
+    fs.writeFile(outputPath, html, err => {
+        if (err) {
+            throw err
+        }
+        else {
+            console.log("Successfully created HTML file in the output folder.")
+        }
+    })
 }
 
 init()
