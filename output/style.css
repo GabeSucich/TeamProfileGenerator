@@ -1,0 +1,17 @@
+.employee-card {
+    margin-bottom: 8%;
+}
+
+.text-center {
+    color: black;
+}
+.team-heading, .card-header, .list-group-item {
+    background-color: lavender;
+
+}
+.container {
+    width: 100%;
+    padding-left: 3%;
+    padding-right: 3%;
+}
+
